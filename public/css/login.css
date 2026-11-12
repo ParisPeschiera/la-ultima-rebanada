@@ -1,0 +1,52 @@
+body.pagina-login {
+    display: grid; place-items: center; min-height: 100vh;
+    padding: 24px 16px; position: relative; overflow: hidden;
+    background: radial-gradient(60% 60% at 50% 40%, rgba(255, 122, 47, .28), transparent 70%), var(--carbon);
+}
+body.pagina-login::before {
+    content: ""; position: fixed; width: min(120vmin, 900px); aspect-ratio: 1; right: -18vmin; bottom: -22vmin;
+    background: url("../img/logo.svg") center / contain no-repeat; opacity: .13; transform: rotate(-12deg); pointer-events: none;
+}
+body.pagina-login::after { content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 18px; background-color: #fff; background-image: var(--cuadros); background-size: 18px 18px; border-top: 2px solid var(--carbon); }
+.login-card {
+    position: relative; z-index: 1; width: 100%; max-width: 440px;
+    background: var(--crema); border: 3px solid var(--carbon); border-radius: 26px;
+    padding: 30px 28px 24px; box-shadow: 8px 9px 0 var(--queso);
+}
+
+.login-marca { text-align: center; margin-bottom: 18px; }
+.login-marca .logo { width: 72px; height: 72px; margin: 0 auto; }
+.login-marca h1 { font-size: 40px; color: var(--carbon); margin-top: 8px; letter-spacing: -.045em; }
+.login-marca p { color: var(--gris); font-weight: 700; }
+
+.sesion-activa {
+    background: var(--azul-suave); border-radius: var(--radio-sm);
+    padding: 10px 12px; margin-bottom: 14px; font-size: 14px;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between;
+}
+.sesion-activa div { display: flex; gap: 6px; }
+
+.tabs { display: grid; grid-template-columns: 1fr 1fr; background: var(--crema-2); border: 2px solid var(--carbon); border-radius: 999px; padding: 4px; margin-bottom: 20px; }
+.tab-btn { border: 0; background: transparent; padding: 10px; border-radius: 999px; font-weight: 800; color: var(--gris); }
+.tab-btn.active { background: var(--carbon); color: var(--queso); }
+
+#mensaje { min-height: 22px; margin-top: 10px; font-weight: 700; text-align: center; font-size: 14.5px; }
+#mensaje.error { color: var(--rojo-oscuro); }
+#mensaje.ok { color: var(--verde); }
+
+.nota-rol {
+    font-size: 13px; color: var(--gris); background: var(--crema-2);
+    padding: 9px 12px; border-radius: var(--radio-sm); margin-bottom: 14px;
+}
+
+.invitado { display: block; text-align: center; margin-top: 14px; font-weight: 700; color: var(--rojo); }
+
+.cuentas-demo { margin-top: 18px; border-top: 1px dashed var(--linea); padding-top: 12px; font-size: 13.5px; }
+.cuentas-demo summary { cursor: pointer; font-weight: 800; color: var(--gris); }
+.cuentas-demo ul { list-style: none; margin-top: 8px; display: grid; gap: 4px; }
+.cuentas-demo code { background: #fff; padding: 1px 7px; border-radius: 6px; border: 1px solid var(--linea); }
+
+.login-card { animation: login-entra .5s var(--ease-out) backwards; }
+@keyframes login-entra { from { opacity: 0; transform: translateY(14px) scale(.985); } }
+.tab-btn { transition: background-color .2s var(--ease-out), color .2s var(--ease-out), box-shadow .2s var(--ease-out), transform .16s var(--ease-out); }
+.tab-btn:active { transform: scale(.97); }

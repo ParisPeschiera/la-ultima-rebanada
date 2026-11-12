@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Última Rebanada — Pizza a domicilio con seguimiento en vivo</title>
+    <meta name="description" content="Pide tu pizza, personalízala y sigue tu pedido en tiempo real hasta tu puerta.">
+
+    <link rel="icon" type="image/svg+xml" href="../img/logo.svg">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/cliente.css">
+</head>
+
+<body>
+
+    <header class="navbar" id="navbar">
+        <a class="marca" href="#inicio" aria-label="La Última Rebanada, inicio">
+            <img class="marca-logo" src="../img/logo.svg" alt="" width="40" height="40">
+            <span class="marca-texto">La Última Rebanada</span>
+        </a>
+
+        <nav id="navPrincipal" aria-label="Principal">
+            <a href="#menu">Menú</a>
+            <a href="#promos">Promos</a>
+            <a href="#pedido">Rastrear pedido</a>
+            <a href="#opiniones">Opiniones</a>
+            <a href="#cobertura">Cobertura</a>
+            <a href="#contacto">Contacto</a>
+            <div class="nav-usuario" id="navUsuario"></div>
+        </nav>
+
+        <div class="navbar-acciones">
+            <div class="usuario-menu" id="usuarioMenu"></div>
+            <button class="btn-carrito" id="btnCarrito" type="button" aria-label="Abrir carrito">
+                🛒 <span class="carrito-texto">Carrito</span>
+                <span id="cantidad" class="burbuja">0</span>
+            </button>
+            <button class="btn-hamburguesa" id="btnMenu" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+        </div>
+    </header>
+    <div class="aviso-cerrado oculto" id="avisoCerrado" role="status"></div>
+
+    <main>
+
+        <section id="inicio" class="hero">
+            <div class="hero-contenido">
+                <div class="hero-texto">
+                    <h1>Pizza caliente.<br>Y sabes dónde está.</h1>
+                    <p>Pídela, personalízala y sigue a tu repartidor en el mapa hasta tu puerta.</p>
+                </div>
+
+                <div class="hero-arte" aria-hidden="false">
+                    <svg class="hero-pizza" viewBox="-20 -20 560 560" role="img" aria-label="Una pizza a la que le falta una rebanada">
+    <defs>
+        <g id="pizzaCompleta">
+            <circle cx="260" cy="260" r="250" fill="#E3A04F" stroke="#1D1410" stroke-width="7"/>
+            <circle cx="260" cy="260" r="232" fill="none" stroke="#C47F2E" stroke-width="5" stroke-dasharray="3 14" stroke-linecap="round"/>
+            <circle cx="260" cy="260" r="218" fill="#D9341C" stroke="#1D1410" stroke-width="5"/>
+            <circle cx="260" cy="260" r="206" fill="#FFC62E"/>
+            <ellipse cx="190" cy="256" rx="33" ry="12" fill="#FFE18A" opacity=".75" transform="rotate(98 190 256)"/><ellipse cx="284" cy="64" rx="23" ry="12" fill="#FFE18A" opacity=".75" transform="rotate(79 284 64)"/><ellipse cx="180" cy="331" rx="25" ry="13" fill="#FFE18A" opacity=".75" transform="rotate(48 180 331)"/><ellipse cx="363" cy="254" rx="23" ry="18" fill="#FFE18A" opacity=".75" transform="rotate(50 363 254)"/><ellipse cx="286" cy="230" rx="30" ry="17" fill="#FFE18A" opacity=".75" transform="rotate(154 286 230)"/><ellipse cx="96" cy="152" rx="20" ry="16" fill="#FFE18A" opacity=".75" transform="rotate(12 96 152)"/><ellipse cx="458" cy="285" rx="21" ry="11" fill="#FFE18A" opacity=".75" transform="rotate(9 458 285)"/><ellipse cx="330" cy="258" rx="34" ry="14" fill="#FFE18A" opacity=".75" transform="rotate(61 330 258)"/><ellipse cx="139" cy="197" rx="30" ry="14" fill="#FFE18A" opacity=".75" transform="rotate(107 139 197)"/><ellipse cx="288" cy="297" rx="33" ry="14" fill="#FFE18A" opacity=".75" transform="rotate(133 288 297)"/><ellipse cx="370" cy="267" rx="23" ry="11" fill="#FFE18A" opacity=".75" transform="rotate(32 370 267)"/><ellipse cx="327" cy="139" rx="25" ry="17" fill="#FFE18A" opacity=".75" transform="rotate(143 327 139)"/><ellipse cx="351" cy="306" rx="20" ry="14" fill="#FFE18A" opacity=".75" transform="rotate(54 351 306)"/><ellipse cx="212" cy="204" rx="24" ry="10" fill="#FFE18A" opacity=".75" transform="rotate(17 212 204)"/><ellipse cx="231" cy="291" rx="26" ry="16" fill="#FFE18A" opacity=".75" transform="rotate(114 231 291)"/><ellipse cx="357" cy="360" rx="25" ry="10" fill="#FFE18A" opacity=".75" transform="rotate(11 357 360)"/>
+            <g transform="translate(331.0 259.3) rotate(90)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(275.5 327.7) rotate(50)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(202.2 301.9) rotate(53)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(200.6 222.6) rotate(9)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(285.0 189.6) rotate(72)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(386.3 271.3) rotate(80)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(355.3 355.6) rotate(25)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(255.0 382.6) rotate(86)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(161.5 355.8) rotate(34)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(129.5 278.7) rotate(43)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(150.0 206.6) rotate(11)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(218.6 144.2) rotate(39)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(295.3 139.2) rotate(42)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(365.2 184.6) rotate(1)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(452.9 274.5) rotate(52)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(419.7 363.4) rotate(15)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(354.2 425.7) rotate(17)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(267.8 444.3) rotate(31)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(156.9 426.6) rotate(90)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(98.6 362.7) rotate(12)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(79.7 295.2) rotate(1)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(86.2 209.1) rotate(7)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(139.5 117.8) rotate(59)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(222.5 77.6) rotate(62)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(317.9 75.3) rotate(22)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(361.5 107.3) rotate(87)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g><g transform="translate(438.6 202.8) rotate(71)"><circle r="25" fill="#C22912" stroke="#1D1410" stroke-width="4"/><circle cx="-8" cy="-6" r="4" fill="#8F1A0A"/><circle cx="9" cy="3" r="4.5" fill="#8F1A0A"/><circle cx="-2" cy="11" r="3.5" fill="#8F1A0A"/></g>
+            <g transform="translate(336.6044443118978 324.27876096865396) rotate(130)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(166.03073792140918 294.2020143325669) rotate(250)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(225.79798566743315 166.03073792140916) rotate(340)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(232.21629157329116 417.5692404819533) rotate(190)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(109.64918067425464 205.27677706789302) rotate(290)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(340.0 121.43593539448983) rotate(390)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(417.5692404819533 232.21629157329113) rotate(440)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(237.0 299.83716857408416) rotate(210)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(283.0 220.16283142591584) rotate(390)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(365.0 441.8653347947321) rotate(150)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(78.13466520526788 365.0) rotate(240)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(125.0146019658267 99.13066694501464) rotate(320)"><path d="M0 -17 C14 -10 14 10 0 17 C-14 10 -14 -10 0 -17Z" fill="#17744A" stroke="#1D1410" stroke-width="4"/><path d="M0 -12 V12" stroke="#0D4D2F" stroke-width="3" stroke-linecap="round"/></g>
+        </g>
+        <clipPath id="cortePizza"><path d="M260 260 L509.2 179.0 A262 262 0 1 1 374.9 24.5 Z"/></clipPath>
+        <clipPath id="corteRebanada"><path d="M260 260 L509.2 179.0 A262 262 0 0 0 374.9 24.5 Z"/></clipPath>
+    </defs>
+    <path class="hero-hueco" d="M260 260 L497.8 182.7 A250 250 0 0 0 369.6 35.3 Z" fill="none" stroke="#FFC62E" stroke-width="3" stroke-dasharray="7 9" stroke-linecap="round"/>
+    <g clip-path="url(#cortePizza)"><use href="#pizzaCompleta"/></g>
+    <g class="hero-rebanada" clip-path="url(#corteRebanada)"><use href="#pizzaCompleta"/></g>
+</svg>
+                    <span class="sello-hero" aria-hidden="true">Delivery<br><strong>~35 min</strong></span>
+                </div>
+
+                <div class="servicio-card">
+                    <div class="modo-toggle" role="radiogroup" aria-label="Tipo de servicio">
+                        <button type="button" class="modo-btn activo" data-modo="delivery" role="radio" aria-checked="true">🛵 Delivery</button>
+                        <button type="button" class="modo-btn" data-modo="recojo" role="radio" aria-checked="false">🏪 Recojo en tienda</button>
+                    </div>
+
+                    <div id="bloqueDistrito" class="campo">
+                        <label for="heroDistrito">¿A qué distrito te lo llevamos?</label>
+                        <select id="heroDistrito"></select>
+                    </div>
+                    <p id="bloqueRecojo" class="oculto servicio-nota">Recoge en <strong>Av. Larco 1234, Miraflores</strong>. Listo en ~20 min, sin costo de envío.</p>
+
+                    <a href="#menu" class="btn btn-bloque" id="btnEmpezar">Empezar mi pedido</a>
+                </div>
+            </div>
+        </section>
+        <div class="cuadros" aria-hidden="true"></div>
+
+        <section class="beneficios" aria-label="Beneficios">
+            <div><strong>35 min</strong><small>Delivery promedio, hasta 15 km</small></div>
+            <div><strong>En vivo</strong><small>Mira el recorrido en el mapa</small></div>
+            <div><strong>S/ 0</strong><small>De envío si recoges en tienda</small></div>
+            <div><strong>Yape y Plin</strong><small>También efectivo y tarjeta</small></div>
+        </section>
+
+        <section id="promos" class="franja franja-tomate"><div class="seccion">
+            <div class="titulo-seccion">
+                <h2>Promos y cupones</h2>
+                <p>Copia el código y pégalo en tu carrito.</p>
+            </div>
+            <div class="promos-grid">
+                <article class="promo-card">
+                    <span class="promo-codigo" data-copiar="LUR10">LUR10</span>
+                    <h3>10% de descuento</h3>
+                    <p>En todo tu pedido. Válido todos los días.</p>
+                </article>
+                <article class="promo-card">
+                    <span class="promo-codigo" data-copiar="BIENVENIDO">BIENVENIDO</span>
+                    <h3>S/ 8 de descuento</h3>
+                    <p>En pedidos desde S/ 40.</p>
+                </article>
+                <article class="promo-card">
+                    <span class="promo-codigo" data-copiar="ENVIOGRATIS">ENVIOGRATIS</span>
+                    <h3>Envío gratis</h3>
+                    <p>Además, el envío es gratis desde S/ 70 sin cupón.</p>
+                </article>
+            </div>
+        </div></section>
+
+        <section id="menu" class="seccion seccion-menu">
+            <div class="titulo-seccion">
+                <h2>Nuestra carta</h2>
+                <p>Preparada al momento con ingredientes frescos.</p>
+            </div>
+
+            <div class="categorias-barra" id="categoriasBarra" role="tablist" aria-label="Categorías"></div>
+            <div class="productos" id="productos" aria-live="polite"></div>
+        </section>
+
+        <section id="pedido" class="franja franja-tinta"><div class="seccion seguimiento">
+            <div class="titulo-seccion">
+                <h2>¿Dónde está mi pedido?</h2>
+                <p>Ingresa tu código o elige uno de tus pedidos recientes.</p>
+            </div>
+
+            <div id="solicitudesZona" class="solicitudes-zona" aria-live="polite"></div>
+
+            <form class="buscar-pedido-form" id="formRastreo" novalidate>
+                <label class="sr-only" for="inputCodigoRastreo">Código de pedido</label>
+                <input type="text" id="inputCodigoRastreo" inputmode="numeric" placeholder="Ej: 1048" autocomplete="off">
+                <button class="btn" type="submit">Rastrear</button>
+            </form>
+            <p id="rastreoError" class="rastreo-error" role="alert"></p>
+            <div id="misPedidos" class="mis-pedidos"></div>
+
+            <div id="trackerVacio" class="tracker-vacio">
+                <span aria-hidden="true">🍕</span>
+                <p>Aquí verás el estado de tu pedido en tiempo real: cocina, horno, recorrido del repartidor y hora estimada de llegada.</p>
+            </div>
+
+            <article id="tracker" class="tracker oculto" aria-live="polite">
+                <header class="tracker-cabecera">
+                    <div>
+                        <h3 id="trkTitulo">Pedido #0000</h3>
+                        <p id="trkSub"></p>
+                    </div>
+                    <div class="tracker-eta">
+                        <span id="trkEtaTitulo">Llegada estimada</span>
+                        <strong id="trkEta">--:--</strong>
+                        <small id="trkEtaMin"></small>
+                    </div>
+                </header>
+
+                <ol class="pasos" id="trkPasos"></ol>
+                <p class="tracker-mensaje" id="trkMensaje"></p>
+
+                <div class="tracker-cuerpo">
+                    <div class="tracker-mapa-col">
+                        <div class="mapa" id="trkMapa"></div>
+                        <div class="mapa-recojo oculto" id="trkRecojo">
+                            <strong>Retira tu pedido en</strong>
+                            <p>Av. Larco 1234, Miraflores</p>
+                            <small>Presenta tu código de entrega en caja.</small>
+                        </div>
+                    </div>
+
+                    <div class="tracker-detalle">
+                        <p class="aviso-login oculto" id="trkAvisoLogin">¿Es tu pedido? <a href="#" data-abrir-acceso>Inicia sesión</a> para ver tu código de entrega y tu comprobante.</p>
+                        <div class="repartidor-box oculto" id="trkRepartidor"></div>
+
+                        <div class="codigo-entrega oculto" id="trkCodigoBox">
+                            <span>Tu código de entrega</span>
+                            <strong id="trkCodigo">----</strong>
+                            <p>No lo compartas por chat ni llamada. Díselo al repartidor solo cuando recibas tu pedido.</p>
+                        </div>
+
+                        <div class="resumen-pedido" id="trkResumen"></div>
+                        <ul class="historial" id="trkHistorial"></ul>
+                        <button class="btn btn-claro btn-chico oculto" id="btnCancelar" type="button">Cancelar mi pedido</button>
+                    </div>
+                </div>
+
+                <div class="calificar oculto" id="trkCalificar">
+                    <div class="calificar-grid">
+                        <div class="cal-bloque">
+                            <div id="calForm">
+                                <h4>🍕 ¿Cómo estuvo tu pedido?</h4>
+                                <div class="estrellas" id="estrellas" role="radiogroup" aria-label="Calificación del pedido"></div>
+                                <textarea id="calComentario" placeholder="Cuéntanos más (opcional)" aria-label="Comentario sobre el pedido"></textarea>
+                                <button class="btn" id="btnCalificar" type="button">Enviar calificación</button>
+                            </div>
+                            <div id="calGracias" class="oculto"></div>
+                        </div>
+
+                        <div class="cal-bloque oculto" id="calRepBloque">
+                            <div id="repForm" class="cal-inline-cta">
+                                <h4>🛵 ¿Cómo fue la entrega de <span id="repNombreCal">tu repartidor</span>?</h4>
+                                <p class="cal-privado">Cuéntanos si llegó a tiempo y si tu pedido llegó en buen estado.</p>
+                                <button class="btn" id="btnAbrirCalRep" type="button">Calificar al repartidor</button>
+                            </div>
+                            <div id="repGracias" class="oculto"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div></section>
+
+        <section id="opiniones" class="franja franja-masa"><div class="seccion opiniones">
+            <div class="titulo-seccion">
+                <h2>Lo que dicen nuestros clientes</h2>
+                <p>Opiniones de pedidos reales ya entregados.</p>
+            </div>
+            <div class="opiniones-contenido">
+                <div class="opiniones-resumen" id="opResumen"></div>
+                <div class="opiniones-lista" id="opLista" aria-live="polite"></div>
+            </div>
+            <p class="opiniones-nota">Solo pueden opinar quienes recibieron su pedido. ¿Ya pediste? <a href="#pedido">Califica tu pedido aquí</a>.</p>
+        </div></section>
+
+        <section id="cobertura" class="seccion cobertura">
+            <div class="titulo-seccion">
+                <h2>Zonas de cobertura</h2>
+                <p>Llegamos hasta 15 km a la redonda desde nuestro local.</p>
+            </div>
+
+            <div class="cobertura-contenido">
+                <div class="cobertura-mapa">
+                    <div id="mapaCobertura" class="mapa-cobertura-real oculto" aria-label="Mapa de la zona de cobertura"></div>
+                    <div class="radio-cobertura" id="coberturaCss" aria-hidden="true">
+                        <div class="circulo circulo-3"></div>
+                        <div class="circulo circulo-2"></div>
+                        <div class="circulo circulo-1"></div>
+                        <div class="punto-local">🍕</div>
+                    </div>
+                    <span class="leyenda-radio">Radio máximo: 15 km</span>
+                </div>
+
+                <div class="cobertura-lista">
+                    <p>Distritos dentro de nuestro radio:</p>
+                    <div class="zonas-chips" id="zonasChips"></div>
+
+                    <div class="buscar-zona">
+                        <label class="sr-only" for="inputZona">Tu distrito</label>
+                        <input type="text" id="inputZona" placeholder="Escribe tu distrito para verificar cobertura">
+                        <button class="btn" id="btnZona" type="button">Verificar</button>
+                    </div>
+                    <p id="resultadoZona" role="status"></p>
+                    <button class="btn btn-chico btn-claro" id="btnZonaGps" type="button">📍 ¿Llegan a donde estoy ahora?</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccion local">
+            <div class="local-info">
+                <h2>Nuestro local</h2>
+                <p><strong>Dirección:</strong> Av. Larco 1234, Miraflores, Lima</p>
+                <p><strong>Horario:</strong> todos los días de 12:00 a 23:00</p>
+                <p><strong>Pedidos por WhatsApp:</strong> 999 123 456</p>
+                <p class="local-nota">¿Prefieres ordenar por teléfono? También lo registramos en el sistema para que puedas seguirlo aquí.</p>
+            </div>
+            <div class="local-mapa">
+                <iframe title="Ubicación del local" src="https://maps.google.com/maps?q=-12.1219,-77.0297&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="cuadros" aria-hidden="true"></div>
+    <footer id="contacto">
+        <div class="footer-logo"><img src="../img/logo.svg" alt="" width="44" height="44"> La Última Rebanada</div>
+        <p>Tu pizza favorita, donde quieras.</p>
+        <p class="redes">Instagram · Facebook · WhatsApp</p>
+        <small>© 2026 La Última Rebanada — Curso Integrador I · Sistemas Software</small>
+    </footer>
+
+    <aside id="carrito" class="carrito" aria-label="Carrito de compras" aria-hidden="true">
+        <div class="carrito-header">
+            <h2>Mi carrito</h2>
+            <button type="button" id="btnCerrarCarrito" aria-label="Cerrar carrito">✕</button>
+        </div>
+
+        <div class="carrito-servicio" id="carritoServicio"></div>
+
+        <div id="productosCarrito" class="carrito-lista"></div>
+
+        <div class="carrito-pie">
+            <form class="cupon-form" id="formCupon">
+                <label class="sr-only" for="inputCupon">Cupón</label>
+                <input type="text" id="inputCupon" placeholder="¿Tienes un cupón?" autocomplete="off">
+                <button class="btn btn-chico btn-oscuro" type="submit">Aplicar</button>
+            </form>
+            <p id="cuponMsg" class="cupon-msg" role="status"></p>
+
+            <dl class="totales" id="totales"></dl>
+
+            <button class="btn btn-bloque" id="btnContinuar" type="button">Continuar pedido</button>
+        </div>
+    </aside>
+    <div id="overlay" class="overlay"></div>
+
+    <div id="modalCalificar" class="modal modal-cal" role="dialog" aria-modal="true" aria-labelledby="calTitulo" aria-hidden="true">
+        <div class="modal-contenido">
+            <div class="hoja-asa" aria-hidden="true"></div>
+            <div id="calModalForm" class="cal-modal-vista" style="display:flex;flex-direction:column;min-height:0;flex:1">
+                <div class="modal-body">
+                    <div class="cal-cabecera">
+                        <svg class="cal-check" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29.5l7.5 7.5L39 21"/></svg>
+                        <h2 id="calTitulo">¡Pedido entregado!</h2>
+                        <p>Tu pedido <strong id="calPedidoNum">#</strong> ya está contigo. ¿Cómo fue la entrega?</p>
+                    </div>
+                    <div class="cal-rep">
+                        <span class="cal-avatar" id="calAvatar">D</span>
+                        <div><strong id="calRepNombre">Tu repartidor</strong><small>Tu repartidor</small></div>
+                    </div>
+                    <div class="cal-estrellas-zona">
+                        <div class="estrellas estrellas-grandes" id="estrellasRepModal" role="radiogroup" aria-label="Calificación del repartidor"></div>
+                        <div class="cal-estrella-txt" id="calEstrellaTxt" aria-live="polite">Toca una estrella</div>
+                    </div>
+                    <fieldset class="etq-grupo" id="grupoPos"><legend>¿Qué salió bien?</legend><div class="etq-lista" id="etqPos"></div></fieldset>
+                    <fieldset class="etq-grupo" id="grupoNeg"><legend>¿Hubo algún problema?</legend><div class="etq-lista" id="etqNeg"></div></fieldset>
+                    <div class="cal-aviso" id="calAviso"><div><p>Avisaremos de inmediato a la administración para revisar este reporte de tu entrega.</p></div></div>
+                    <textarea id="calRepComentario" placeholder="Algo más que quieras contarnos (opcional)" aria-label="Comentario sobre el repartidor" maxlength="300"></textarea>
+                    <small class="cal-privado">Esta opinión solo la ve la administración, no se publica.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-claro" id="btnCalAhoraNo">Ahora no</button>
+                    <button type="button" class="btn" id="btnCalEnviar">Enviar calificación</button>
+                </div>
+            </div>
+            <div id="calModalOk" class="cal-ok oculto" role="status">
+                <svg class="cal-check" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="28"/><path d="M17 29.5l7.5 7.5L39 21"/></svg>
+                <h3>¡Gracias por tu opinión!</h3>
+                <p id="calOkTxt">Tu calificación nos ayuda a mejorar el servicio.</p>
+                <button type="button" class="btn" data-cerrar="modalCalificar">Listo</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalPersonalizar" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo" aria-hidden="true">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2 id="modalTitulo">Personalizar pizza</h2>
+                <button type="button" data-cerrar="modalPersonalizar" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="modal-body" id="modalPersBody"></div>
+            <div class="modal-footer">
+                <div><span>Total</span> <strong id="modalTotal">S/ 0.00</strong></div>
+                <button class="btn" type="button" id="btnAgregarPers">Agregar al carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalAcceso" class="modal" role="dialog" aria-modal="true" aria-labelledby="accesoTitulo" aria-hidden="true">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2 id="accesoTitulo">Tu cuenta</h2>
+                <button type="button" data-cerrar="modalAcceso" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="acceso-aviso oculto" id="accesoAviso"></p>
+
+                <div class="modo-toggle" role="tablist" aria-label="Acceso">
+                    <button type="button" class="modo-btn activo" data-acceso-tab="login" role="tab">Ya tengo cuenta</button>
+                    <button type="button" class="modo-btn" data-acceso-tab="registro" role="tab">Crear cuenta</button>
+                </div>
+
+                <form id="formAccesoLogin" novalidate>
+                    <div class="campo">
+                        <label for="acUsuario">Usuario o correo</label>
+                        <input type="text" id="acUsuario" autocomplete="username" placeholder="U-juan o juan@correo.com">
+                    </div>
+                    <div class="campo">
+                        <label for="acPassword">Contraseña</label>
+                        <input type="password" id="acPassword" autocomplete="current-password">
+                    </div>
+                    <button class="btn btn-bloque" type="submit">Iniciar sesión</button>
+                </form>
+
+                <form id="formAccesoRegistro" class="oculto" novalidate>
+                    <div class="campo">
+                        <label for="arNombre">Nombre de usuario</label>
+                        <input type="text" id="arNombre" autocomplete="nickname" placeholder="Ej: juan">
+                        <small>Tu usuario será <strong id="arVista">U-…</strong></small>
+                    </div>
+                    <div class="campo">
+                        <label for="arEmail">Correo electrónico</label>
+                        <input type="email" id="arEmail" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+                        <small>Te enviaremos el comprobante de tu pedido y el enlace para seguirlo.</small>
+                    </div>
+                    <div class="fila-campos">
+                        <div class="campo">
+                            <label for="arTelefono">Celular</label>
+                            <input type="tel" id="arTelefono" autocomplete="tel" placeholder="999 888 777">
+                        </div>
+                        <div class="campo">
+                            <label for="arPassword">Contraseña</label>
+                            <input type="password" id="arPassword" autocomplete="new-password" placeholder="Mínimo 4 caracteres">
+                        </div>
+                    </div>
+                    <button class="btn btn-bloque" type="submit">Crear cuenta y continuar</button>
+                </form>
+
+                <p id="accesoError" class="rastreo-error" role="alert"></p>
+                <p class="acceso-pie">¿Eres parte del equipo? <a href="login.html">Ingresa por aquí</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalCheckout" class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitulo" aria-hidden="true">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2 id="checkoutTitulo">Confirmar pedido</h2>
+                <button type="button" data-cerrar="modalCheckout" aria-label="Cerrar">✕</button>
+            </div>
+
+            <form id="formCheckout" novalidate>
+                <div class="modal-body">
+                    <div class="modo-toggle" role="radiogroup" aria-label="Tipo de servicio">
+                        <button type="button" class="modo-btn" data-modo-checkout="delivery" role="radio">🛵 Delivery</button>
+                        <button type="button" class="modo-btn" data-modo-checkout="recojo" role="radio">🏪 Recojo en tienda</button>
+                    </div>
+
+                    <div class="fila-campos">
+                        <div class="campo">
+                            <label for="ckNombre">Nombre</label>
+                            <input type="text" id="ckNombre" autocomplete="name" required>
+                        </div>
+                        <div class="campo">
+                            <label for="ckTelefono">Celular</label>
+                            <input type="tel" id="ckTelefono" autocomplete="tel" placeholder="999 888 777" required>
+                        </div>
+                    </div>
+
+                    <div id="ckDelivery">
+                        <div class="campo">
+                            <label for="ckDireccion">Dirección de entrega</label>
+                            <input type="text" id="ckDireccion" autocomplete="street-address" placeholder="Av./Calle, número, piso/dpto">
+                        </div>
+                        <div class="ubicacion-box">
+                            <button class="btn btn-chico btn-claro" id="btnUbicacion" type="button">📍 Usar mi ubicación actual</button>
+                            <span id="ubicacionEstado" role="status"></span>
+                        </div>
+                        <div class="fila-campos">
+                            <div class="campo">
+                                <label for="ckDistrito">Distrito</label>
+                                <select id="ckDistrito"></select>
+                            </div>
+                            <div class="campo">
+                                <label for="ckReferencia">Referencia</label>
+                                <input type="text" id="ckReferencia" placeholder="Frente al parque, portón negro…">
+                            </div>
+                        </div>
+                        <div id="ckOtroBloque" class="aviso-zona oculto">
+                            <div class="campo">
+                                <label for="ckDistritoOtro">¿En qué distrito vives?</label>
+                                <input type="text" id="ckDistritoOtro" list="listaDistritosExtra" autocomplete="off" placeholder="Ej: San Luis">
+                                <datalist id="listaDistritosExtra"></datalist>
+                            </div>
+                            <p><strong>Tu distrito está fuera de nuestra zona habitual.</strong> Enviaremos tu pedido a evaluación: la tienda revisa la distancia y te confirma un recargo por envío. Tú decides si lo aceptas. No cocinamos nada hasta que aceptes.</p>
+                        </div>
+                    </div>
+
+                    <fieldset class="pagos">
+                        <legend class="etiqueta">Método de pago</legend>
+                        <div id="ckPagos"></div>
+                        <div class="campo oculto" id="ckPagaConBox">
+                            <label for="ckPagaCon">¿Con cuánto pagas? (opcional)</label>
+                            <input type="number" id="ckPagaCon" min="0" step="0.5" placeholder="Ej: 100">
+                        </div>
+                        <small>El pago se registra de forma referencial en esta versión.</small>
+                    </fieldset>
+
+                    <div class="campo">
+                        <label for="ckNotas">Indicaciones para cocina o repartidor (opcional)</label>
+                        <textarea id="ckNotas" placeholder="Sin cebolla, tocar el timbre, etc."></textarea>
+                    </div>
+
+                    <p class="nota-correo" id="ckCorreo"></p>
+                    <div class="ck-resumen" id="ckResumen"></div>
+                    <p id="ckError" class="rastreo-error" role="alert"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <div><span id="ckTotalEtiqueta">Total</span> <strong id="ckTotal">S/ 0.00</strong></div>
+                    <button class="btn" type="submit" id="btnCkEnviar">Confirmar pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/mapa.js"></script>
+    <script src="../js/cliente.js"></script>
+</body>
+</html>

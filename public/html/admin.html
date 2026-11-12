@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de administración - La Última Rebanada</title>
+
+    <link rel="icon" type="image/svg+xml" href="../img/logo.svg">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/panel.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body class="panel panel-admin">
+
+    <header class="panel-header">
+        <a class="panel-marca" href="admin.html">
+            <img class="panel-logo" src="../img/logo.svg" alt="" width="40" height="40">
+            <div><h1>La Última Rebanada</h1><small>Panel de administración</small></div>
+        </a>
+        <div class="panel-usuario">
+            <span class="estado-online">En línea</span>
+            <span class="panel-nombre" id="nombreUsuario">🗂️ Administrador</span>
+            <button class="btn btn-chico btn-claro" id="btnSalir" type="button">Salir</button>
+        </div>
+    </header>
+
+    <main class="panel-contenido">
+
+        <section class="panel-encabezado">
+            <div>
+                <h2>Control general</h2>
+                <p>Supervisa pedidos, asigna repartidores, administra cuentas del personal y controla el inventario en tiempo real.</p>
+            </div>
+            <div class="hora-box"><span>Hora actual</span><strong id="horaActual">00:00</strong></div>
+        </section>
+
+        <section class="tienda-bar" id="tiendaBar" aria-label="Estado del negocio">
+            <div class="tienda-estado"><span class="tienda-luz" id="tiendaLuz" aria-hidden="true"></span>
+                <div><strong id="tiendaTitulo">Negocio abierto</strong><small id="tiendaSub">Recibiendo pedidos</small></div></div>
+            <input type="text" id="tiendaMsg" maxlength="120" placeholder="Mensaje para los clientes (opcional). Ej: Abrimos a las 12:00 p. m." aria-label="Mensaje para los clientes mientras estás cerrado">
+            <button class="btn" id="btnTienda" type="button">Cerrar negocio</button>
+        </section>
+
+        <section class="kpis" aria-label="Resumen del día">
+            <div class="kpi"><div class="kpi-icono amarillo">📦</div><div><span>Pedidos hoy</span><strong id="kpiPedidos">0</strong></div></div>
+            <div class="kpi"><div class="kpi-icono verde">💵</div><div><span>Ventas del día</span><strong id="kpiVentas">S/ 0.00</strong></div></div>
+            <div class="kpi"><div class="kpi-icono azul">🔥</div><div><span>Pedidos activos</span><strong id="kpiActivos">0</strong></div></div>
+            <div class="kpi"><div class="kpi-icono naranja">⚠️</div><div><span>Alertas de stock</span><strong id="kpiAlertas">0</strong></div></div>
+        </section>
+
+        <nav class="subnav" aria-label="Secciones">
+            <a href="#fueraZona">Fuera de zona <span class="burbuja-rojo oculto" id="badgeZona">0</span></a>
+            <a href="#asignar">Asignar reparto <span class="burbuja-rojo oculto" id="badgeAsignar">0</span></a>
+            <a href="#avisos">Avisos</a>
+            <a href="#ventas">Ventas</a>
+            <a href="#demanda">Demanda</a>
+            <a href="#historial">Historial</a>
+            <a href="#pedidos">Pedidos</a>
+            <a href="#equipo">Equipo</a>
+            <a href="#usuarios">Cuentas</a>
+            <a href="#inventario">Inventario</a>
+            <a href="#opinionesAdmin">Opiniones</a>
+            <a href="#correos">Correos</a>
+        </nav>
+
+        <section class="seccion-panel" id="fueraZona">
+            <h3>📍 Pedidos fuera de zona</h3>
+            <p class="desc">El cliente pidió delivery a un distrito que no está en la lista. Revisa la distancia, fija el recargo (puede ser S/ 0) y el cliente decide si lo acepta. No pasa a cocina hasta que acepte.</p>
+            <div id="listaZona" class="solic-lista"></div>
+        </section>
+
+        <section class="seccion-panel" id="asignar">
+            <h3>🛵 Pedidos listos por asignar</h3>
+            <p class="desc">Cocina los marcó como listos. Elige un repartidor para que salga a entregarlos.</p>
+            <div id="listaAsignar" class="asignar-lista"></div>
+        </section>
+
+        <section class="seccion-panel" id="avisos">
+            <div class="cabecera-seccion">
+                <h3>🔔 Avisos del sistema</h3>
+                <button class="btn btn-chico btn-claro" id="btnLeidas" type="button">Marcar como leídos</button>
+            </div>
+            <div id="listaAvisos" class="avisos-lista"></div>
+        </section>
+
+        <section class="seccion-panel" id="ventas">
+            <div class="cabecera-seccion">
+                <h3>📈 Ventas</h3>
+                <div class="controles-reporte">
+                    <label class="sr-only" for="vtRango">Rango de fechas</label>
+                    <select id="vtRango" class="select-chico">
+                        <option value="7">Últimos 7 días</option>
+                        <option value="30" selected>Últimos 30 días</option>
+                        <option value="90">Últimos 90 días</option>
+                        <option value="personalizado">Personalizado…</option>
+                    </select>
+                    <span id="vtPersonal" class="oculto">
+                        <input type="date" id="vtDesde" aria-label="Desde"> <input type="date" id="vtHasta" aria-label="Hasta">
+                    </span>
+                    <div class="segmento" role="group" aria-label="Agrupar por">
+                        <button type="button" data-agrupar="dia" class="activo">Día</button>
+                        <button type="button" data-agrupar="semana">Semana</button>
+                        <button type="button" data-agrupar="mes">Mes</button>
+                    </div>
+                    <div class="segmento" role="group" aria-label="Qué mostrar">
+                        <button type="button" data-metrica="ventas" class="activo">Ventas S/</button>
+                        <button type="button" data-metrica="pedidos">Pedidos</button>
+                    </div>
+                </div>
+            </div>
+            <p class="desc">Las ventas cuentan solo pedidos <strong>entregados</strong>; “realizados” incluye todos los que entraron.</p>
+            <div class="kpis-mini" id="vtResumen"></div>
+            <div class="grafico-caja"><canvas id="graficoVentas" role="img" aria-label="Gráfico de ventas del periodo"></canvas></div>
+            <p class="nota-grafico oculto" id="vtNota">┈ La línea punteada es el día (o semana/mes) en curso: todavía no termina, por eso se ve más bajo.</p>
+            <div class="top-productos">
+                <h4>🏆 Más vendidos del periodo</h4>
+                <ol id="vtTop"></ol>
+            </div>
+        </section>
+
+        <section class="seccion-panel" id="demanda">
+            <div class="cabecera-seccion">
+                <h3>🔥 Demanda y reabastecimiento</h3>
+                <div class="controles-reporte">
+                    <label class="sr-only" for="dmRango">Periodo</label>
+                    <select id="dmRango" class="select-chico">
+                        <option value="7" selected>Últimos 7 días</option>
+                        <option value="14">Últimos 14 días</option>
+                        <option value="30">Últimos 30 días</option>
+                    </select>
+                </div>
+            </div>
+            <p class="desc">Cuenta todos los pedidos no cancelados. Con lo que se vende, calcula cuántos días te duran los insumos para que repongas a tiempo.</p>
+            <div class="kpis-mini" id="dmResumen"></div>
+            <div class="demanda-grid">
+                <div><h4>🏆 Productos más vendidos</h4><ol class="barras-lista" id="dmProductos"></ol></div>
+                <div><h4>🕒 Pedidos por hora del día</h4><div class="barras-horas" id="dmHoras" role="img" aria-label="Pedidos por hora del día"></div><p class="nota-grafico" id="dmPico"></p></div>
+            </div>
+            <h4 class="dm-sub">📦 ¿Cuánto durarán los insumos?</h4>
+            <div class="tabla-scroll"><table class="tabla">
+                <thead><tr><th>Insumo</th><th>Stock</th><th>Se gasta por día</th><th>Alcanza para</th><th>Estado</th><th></th></tr></thead>
+                <tbody id="dmInsumos"></tbody>
+            </table></div>
+        </section>
+
+        <section class="seccion-panel" id="historial">
+            <div class="cabecera-seccion">
+                <h3>🗓️ Historial de pedidos por día</h3>
+                <div class="controles-reporte">
+                    <label class="sr-only" for="hsRango">Rango</label>
+                    <select id="hsRango" class="select-chico">
+                        <option value="7">Últimos 7 días</option>
+                        <option value="14" selected>Últimos 14 días</option>
+                        <option value="30">Últimos 30 días</option>
+                        <option value="90">Últimos 90 días</option>
+                    </select>
+                    <button class="btn btn-chico btn-claro" id="btnCsv" type="button">⬇ Descargar CSV</button>
+                </div>
+            </div>
+            <p class="desc">Pedidos realizados, entregados y cancelados cada día. Toca “Ver pedidos” para abrir el detalle de ese día.</p>
+            <div class="tabla-scroll">
+                <table class="tabla tabla-historial">
+                    <thead><tr><th>Día</th><th>Realizados</th><th>Entregados</th><th>Cancelados</th><th>Ventas</th><th>Ticket prom.</th><th></th></tr></thead>
+                    <tbody id="cuerpoHistorial"></tbody>
+                    <tfoot id="pieHistorial"></tfoot>
+                </table>
+            </div>
+        </section>
+
+        <section class="seccion-panel" id="pedidos">
+            <div class="cabecera-seccion">
+                <h3>📋 Pedidos</h3>
+                <label class="sr-only" for="filtroPedidos">Filtrar pedidos</label>
+                <select id="filtroPedidos" class="select-chico">
+                    <option value="activos">Activos</option>
+                    <option value="hoy">Todos de hoy</option>
+                    <option value="entregado">Entregados</option>
+                    <option value="cancelado">Cancelados</option>
+                </select>
+            </div>
+            <div class="tabla-scroll">
+                <table class="tabla">
+                    <thead>
+                        <tr><th>Pedido</th><th>Cliente</th><th>Servicio</th><th>Estado</th><th>Total</th><th>Pago</th><th>Reparto</th><th>Pedido ★</th><th>Repartidor ★</th><th></th></tr>
+                    </thead>
+                    <tbody id="cuerpoPedidos"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="seccion-panel" id="equipo">
+            <div class="cabecera-seccion">
+                <h3>🛵 Repartidores: pedidos del día y calificaciones</h3>
+                <div class="controles-reporte">
+                    <label class="sr-only" for="rpFecha">Día a consultar</label>
+                    <input type="date" id="rpFecha" class="select-chico">
+                    <button class="btn btn-chico btn-claro" id="rpHoy" type="button">Hoy</button>
+                </div>
+            </div>
+            <p class="desc">Cada repartidor con los pedidos que le tocaron en el día elegido y lo que opinan los clientes de su atención. Estas opiniones <strong>no se publican</strong> en la tienda.</p>
+            <div id="listaRepartidores" class="repartidores-detalle"></div>
+        </section>
+
+        <section class="seccion-panel" id="usuarios">
+            <h3>👥 Cuentas del sistema</h3>
+            <p class="desc">Solo el administrador crea cuentas de personal y asigna roles. Los clientes se registran solos y siempre son “Cliente”.
+                <strong>Las cuentas nunca se borran: se inhabilitan.</strong> Un trabajador inhabilitado queda registrado con su DNI y no puede volver a trabajar ni figurar como nuevo.</p>
+
+            <form id="formUsuario" class="form-usuario" autocomplete="off">
+                <div class="campo">
+                    <label for="nuNombre">Nombre de usuario</label>
+                    <input type="text" id="nuNombre" placeholder="Ej: pedro" required>
+                </div>
+                <div class="campo">
+                    <label for="nuRol">Tipo de cuenta (rol)</label>
+                    <select id="nuRol" required>
+                        <option value="cocinero">👨‍🍳 Cocinero (prefijo C-)</option>
+                        <option value="delivery">🛵 Delivery (prefijo D-)</option>
+                        <option value="cliente">👤 Cliente (prefijo U-)</option>
+                        <option value="admin">🗂️ Administrador</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="nuDni">DNI (obligatorio para el personal)</label>
+                    <input type="text" id="nuDni" inputmode="numeric" maxlength="8" placeholder="8 dígitos" autocomplete="off">
+                </div>
+                <div class="campo">
+                    <label for="nuEmail">Correo electrónico</label>
+                    <input type="email" id="nuEmail" placeholder="opcional para el personal">
+                </div>
+                <div class="campo">
+                    <label for="nuTelefono">Celular</label>
+                    <input type="tel" id="nuTelefono" placeholder="999 888 777">
+                </div>
+                <div class="campo">
+                    <label for="nuPassword">Contraseña</label>
+                    <input type="password" id="nuPassword" minlength="4" placeholder="Mínimo 4 caracteres" required autocomplete="new-password">
+                </div>
+                <div class="form-usuario-pie">
+                    <span>Se creará como <strong id="nuVista">C-…</strong></span>
+                    <button class="btn" type="submit">Crear cuenta</button>
+                </div>
+            </form>
+            <p id="nuMensaje" class="rastreo-error" role="alert"></p>
+
+            <div class="cabecera-seccion cabecera-tabla">
+                <strong>Cuentas registradas</strong>
+                <label class="sr-only" for="filtroCuentas">Mostrar</label>
+                <select id="filtroCuentas" class="select-chico">
+                    <option value="activas">Activas</option>
+                    <option value="inhabilitadas">Inhabilitadas</option>
+                    <option value="todas">Todas</option>
+                </select>
+            </div>
+            <div class="tabla-scroll">
+                <table class="tabla tabla-cuentas">
+                    <thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>DNI</th><th>Correo</th><th>Celular</th><th>Estado</th><th></th></tr></thead>
+                    <tbody id="cuerpoUsuarios"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="seccion-panel" id="inventario">
+            <h3>📦 Inventario de insumos</h3>
+            <p class="desc">Se descuenta solo cuando cocina empieza a preparar pizzas. Las filas en rojo requieren reposición.</p>
+            <div class="tabla-scroll">
+                <table class="tabla">
+                    <thead><tr><th>Insumo</th><th>Stock actual</th><th>Mínimo</th><th>Estado</th><th></th></tr></thead>
+                    <tbody id="cuerpoInventario"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="seccion-panel" id="opinionesAdmin">
+            <h3>💬 Opiniones de clientes</h3>
+            <p class="desc">Se muestran públicamente en la tienda (con nombre abreviado). Oculta las que sean inapropiadas.</p>
+            <div id="listaOpiniones" class="opiniones-admin"></div>
+        </section>
+
+        <section class="seccion-panel" id="correos">
+            <h3>✉️ Correos enviados</h3>
+            <p class="desc" id="correoModo"></p>
+            <div class="tabla-scroll">
+                <table class="tabla">
+                    <thead><tr><th>Hora</th><th>Para</th><th>Asunto</th><th>Estado</th><th></th></tr></thead>
+                    <tbody id="cuerpoCorreos"></tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modalInhabilitar" class="modal-correo oculto" role="dialog" aria-modal="true" aria-labelledby="inhTitulo">
+        <div class="modal-inh-caja">
+            <h3 id="inhTitulo">Inhabilitar cuenta</h3>
+            <p id="inhTexto" class="inh-texto"></p>
+            <div class="campo">
+                <label for="inhMotivo">Motivo (obligatorio, queda en el registro)</label>
+                <textarea id="inhMotivo" maxlength="300" placeholder="Ej: Despido por falta grave…"></textarea>
+            </div>
+            <div class="campo">
+                <label for="inhConfirma">Para confirmar escribe el usuario: <strong id="inhUsuario"></strong></label>
+                <input type="text" id="inhConfirma" autocomplete="off">
+            </div>
+            <p id="inhError" class="rastreo-error" role="alert"></p>
+            <div class="inh-botones">
+                <button type="button" class="btn btn-claro" id="inhCancelar">Cancelar</button>
+                <button type="button" class="btn btn-oscuro" id="inhOk">Inhabilitar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalCorreo" class="modal-correo oculto" role="dialog" aria-modal="true" aria-labelledby="correoAsunto">
+        <div class="modal-correo-caja">
+            <div class="modal-correo-cab"><strong id="correoAsunto"></strong><button type="button" id="cerrarCorreo" aria-label="Cerrar">✕</button></div>
+            <iframe id="correoFrame" sandbox title="Vista previa del correo"></iframe>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/vendor/chart.umd.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

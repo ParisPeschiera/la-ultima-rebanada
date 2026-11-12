@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de cocina - La Última Rebanada</title>
+
+    <link rel="icon" type="image/svg+xml" href="../img/logo.svg">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/panel.css">
+</head>
+
+<body class="panel panel-cocina">
+
+    <header class="panel-header">
+        <a class="panel-marca" href="cocinero.html">
+            <img class="panel-logo" src="../img/logo.svg" alt="" width="40" height="40">
+            <div><h1>La Última Rebanada</h1><small>Panel de cocina</small></div>
+        </a>
+        <div class="panel-usuario">
+            <span class="estado-online">En línea</span>
+            <span class="panel-nombre" id="nombreUsuario">👨‍🍳 Cocinero</span>
+            <button class="btn btn-chico btn-claro" id="btnSalir" type="button">Salir</button>
+        </div>
+    </header>
+
+    <main class="panel-contenido">
+
+        <section class="panel-encabezado">
+            <div>
+                <h2>Control de pedidos</h2>
+                <p>Los pedidos llegan solos desde la web, del más antiguo al más reciente. Al marcar uno como listo, administración y el cliente se enteran al instante.</p>
+            </div>
+            <div class="hora-box"><span>Hora actual</span><strong id="horaActual">00:00</strong></div>
+        </section>
+
+        <section class="kpis" aria-label="Resumen">
+            <div class="kpi"><div class="kpi-icono azul">📥</div><div><span>En cola</span><strong id="cantidadCola">0</strong></div></div>
+            <div class="kpi"><div class="kpi-icono naranja">👨‍🍳</div><div><span>Cocinando</span><strong id="cantidadCocinando">0</strong></div></div>
+            <div class="kpi"><div class="kpi-icono rojo">🔥</div><div><span>En horno</span><strong id="cantidadHorno">0</strong></div></div>
+            <div class="kpi"><div class="kpi-icono verde">✅</div><div><span>Listos</span><strong id="cantidadListos">0</strong></div></div>
+        </section>
+
+        <div class="filtros" id="filtros" role="tablist" aria-label="Filtrar pedidos">
+            <button class="filtro activo" data-filtro="todos" type="button">Todos</button>
+            <button class="filtro" data-filtro="cola" type="button">En cola</button>
+            <button class="filtro" data-filtro="cocinando" type="button">Cocinando</button>
+            <button class="filtro" data-filtro="horno" type="button">En horno</button>
+            <button class="filtro" data-filtro="listo" type="button">Listos</button>
+        </div>
+
+        <section class="pedidos-grid" id="listaPedidos" aria-live="polite"></section>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/cocinero.js"></script>
+</body>
+</html>

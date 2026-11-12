@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de reparto - La Última Rebanada</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="icon" type="image/svg+xml" href="../img/logo.svg">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/panel.css">
+</head>
+
+<body class="panel panel-delivery">
+
+    <header class="panel-header">
+        <a class="panel-marca" href="delivery.html">
+            <img class="panel-logo" src="../img/logo.svg" alt="" width="40" height="40">
+            <div><h1>La Última Rebanada</h1><small>Panel de reparto</small></div>
+        </a>
+        <div class="panel-usuario">
+            <span class="estado-online">En línea</span>
+            <span class="panel-nombre" id="nombreUsuario">🛵 Repartidor</span>
+            <button class="btn btn-chico btn-claro" id="btnSalir" type="button">Salir</button>
+        </div>
+    </header>
+
+    <main class="panel-contenido">
+
+        <section class="panel-encabezado">
+            <div>
+                <h2>Mis entregas</h2>
+                <p>Aquí aparecen solo los pedidos que administración te asignó. Al confirmar cada paso, el cliente lo ve en su mapa.</p>
+            </div>
+            <div class="cabecera-derecha"><div class="mi-nota oculto" id="miNota"></div><div class="hora-box"><span>Hora actual</span><strong id="horaActual">00:00</strong></div></div>
+        </section>
+
+        <section class="kpis" aria-label="Resumen">
+            <div class="kpi"><div class="kpi-icono amarillo">📦</div><div><span>Por recoger</span><strong id="porRecoger">0</strong></div></div>
+            <div class="kpi"><div class="kpi-icono azul">🎒</div><div><span>Por entregar</span><strong id="porEntregar">0</strong></div></div>
+            <div class="kpi"><div class="kpi-icono naranja">🛵</div><div><span>En camino</span><strong id="enCamino">0</strong></div></div>
+            <div class="kpi"><div class="kpi-icono verde">✅</div><div><span>Entregados hoy</span><strong id="entregados">0</strong></div></div>
+        </section>
+
+        <div class="gps-box" id="gpsBox">
+            <label for="chkGps"><input type="checkbox" id="chkGps"> 📡 Usar mi GPS real</label>
+            <small>Apagado: el recorrido se <strong>simula</strong> por las calles hacia el cliente (ideal para demostración). Encendido: se envía tu ubicación real.</small>
+        </div>
+
+        <section class="ruta-box oculto" id="rutaBox" aria-label="Ruta con varias paradas"></section>
+
+        <div class="filtros" id="filtros" aria-label="Filtrar entregas">
+            <button class="filtro activo" data-filtro="todos" type="button">Todos</button>
+            <button class="filtro" data-filtro="asignado" type="button">Por recoger</button>
+            <button class="filtro" data-filtro="recogido" type="button">Recogidos</button>
+            <button class="filtro" data-filtro="camino" type="button">En camino</button>
+            <button class="filtro" data-filtro="entregado" type="button">Entregados</button>
+        </div>
+
+        <section class="pedidos-grid" id="listaPedidos" aria-live="polite"></section>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/mapa.js"></script>
+    <script src="../js/delivery.js"></script>
+</body>
+</html>

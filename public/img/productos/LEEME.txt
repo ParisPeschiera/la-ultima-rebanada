@@ -1,0 +1,34 @@
+LISTA DE IMÁGENES DE PRODUCTOS
+==================================
+
+Guarda aquí las fotos (formato .webp recomendado, 900 x 600 px, proporción 3:2, menos de 150 KB).
+Luego abre server/catalogo.js y escribe la ruta en el campo img del producto.
+Ejemplo:  img: "productos/margarita.webp"
+
+Estado   Archivo sugerido                  Producto
+------------------------------------------------------------------------
+[LISTA]  pepperoni.webp                  Pepperoni Clásica (pizzas)
+[LISTA]  hawaiana.webp                   Hawaiana (pizzas)
+[LISTA]  carnes-lovers.webp              Carnes Lovers (pizzas)
+[LISTA]  vegetariana.webp                Vegetariana (pizzas)
+[FALTA]  margarita.webp                  Margarita (pizzas)
+[FALTA]  cuatroquesos.webp               Cuatro Quesos (pizzas)
+[FALTA]  americana.webp                  Americana (pizzas)
+[LISTA]  combo.webp                      Combo Última Rebanada (combos)
+[FALTA]  combo-pareja.webp               Combo Pareja (combos)
+[FALTA]  combo-familiar.webp             Combo Familiar (combos)
+[FALTA]  panajo.webp                     Pan al ajo (entradas)
+[FALTA]  panajoqueso.webp                Pan al ajo con queso (entradas)
+[FALTA]  palitos.webp                    Palitos de queso (entradas)
+[FALTA]  ensalada.webp                   Ensalada César (entradas)
+[FALTA]  lasagna.webp                    Lasagna de carne (pastas)
+[FALTA]  spaghetti.webp                  Spaghetti a la boloñesa (pastas)
+[FALTA]  canela.webp                     Rollos de canela (postres)
+[FALTA]  brownie.webp                    Brownie de chocolate (postres)
+[FALTA]  volcan.webp                     Volcán de chocolate (postres)
+[FALTA]  inca15.webp                     Inca Kola 1.5 L (bebidas)
+[FALTA]  coca15.webp                     Coca-Cola 1.5 L (bebidas)
+[FALTA]  sprite15.webp                   Sprite 1.5 L (bebidas)
+[FALTA]  agua.webp                       Agua mineral 600 ml (bebidas)
+
+Mientras una foto falte, la tienda muestra un recuadro neutro de "Foto próximamente".
