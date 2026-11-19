@@ -491,7 +491,7 @@ footer small { opacity: .6; }
 .tracker-mensaje { transition: opacity .18s var(--ease-out), filter .18s var(--ease-out); }
 .tracker-mensaje.cambiando { opacity: 0; filter: blur(3px); }
 
-.franja-tinta .buscar-pedido-form input { background: var(--crema); border-color: var(--crema); }
+.franja-tinta .buscar-pedido-form input { background: var(--crema); border-color: var(--crema); color: var(--carbon); }
 .franja-tinta .rastreo-error { color: #ffb4a6; }
 .franja-tinta .mp-titulo { color: #d9c8b6; }
 .franja-tinta .mp-chip { background: transparent; color: #fff; border: 2px solid rgba(255, 255, 255, .35); }
