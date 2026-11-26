@@ -45,6 +45,16 @@ function migrar() {
 migrar();
 db.exec(fs.readFileSync(path.join(__dirname, "schema.sql"), "utf8"));
 
+// Cuentas de prueba que aparecen en la pantalla de acceso: [usuario, rol, nombre, teléfono, correo, dni]
+const CUENTAS_DEMO = [
+    ["C-cocinero", "cocinero", "Marco Vega", "", "cocina@demo.pe", "70112233"],
+    ["D-delivery", "delivery", "Luis Fernández", "987 111 222", "luis@demo.pe", "70223344"],
+    ["D-kevin", "delivery", "Kevin Salazar", "987 333 444", "kevin@demo.pe", "70334455"],
+    ["D-rosa", "delivery", "Rosa Injante", "987 555 666", "rosa@demo.pe", "70445566"],
+    ["U-cliente", "cliente", "Cliente Demo", "999 888 777", "cliente@demo.pe", null],
+    ["admin", "admin", "Administrador", "", "admin@demo.pe", "70556677"]
+];
+
 function sembrar() {
     if (db.prepare("SELECT COUNT(*) n FROM usuarios").get().n > 0) return;
 
@@ -52,14 +62,7 @@ function sembrar() {
     const hash = bcrypt.hashSync(process.env.CLAVE_DEMO || "1234", 10);
 
     const insU = db.prepare("INSERT INTO usuarios (usuario,password_hash,rol,nombre,telefono,email,dni,creado) VALUES (?,?,?,?,?,?,?,?)");
-    [
-        ["C-cocinero", "cocinero", "Marco Vega", "", "cocina@demo.pe", "70112233"],
-        ["D-delivery", "delivery", "Luis Fernández", "987 111 222", "luis@demo.pe", "70223344"],
-        ["D-kevin", "delivery", "Kevin Salazar", "987 333 444", "kevin@demo.pe", "70334455"],
-        ["D-rosa", "delivery", "Rosa Injante", "987 555 666", "rosa@demo.pe", "70445566"],
-        ["U-cliente", "cliente", "Cliente Demo", "999 888 777", "cliente@demo.pe", null],
-        ["admin", "admin", "Administrador", "", "admin@demo.pe", "70556677"]
-    ].forEach(([u, r, n, t, e, dni]) => insU.run(u, hash, r, n, t, e, dni, ahora));
+    CUENTAS_DEMO.forEach(([u, r, n, t, e, dni]) => insU.run(u, hash, r, n, t, e, dni, ahora));
 
     const idDe = (u) => db.prepare("SELECT id FROM usuarios WHERE usuario = ?").get(u).id;
 
@@ -107,6 +110,42 @@ function sembrar() {
     })();
 }
 sembrar();
+
+// Repone las cuentas de prueba en cada arranque: crea las que falten y, si alguna fue
+// inhabilitada o cambió de contraseña, la reactiva con la clave de demo. CUENTAS_DEMO=0 lo desactiva.
+function restaurarCuentasDemo() {
+    if (process.env.CUENTAS_DEMO === "0") return;
+    const clave = process.env.CLAVE_DEMO || "1234";
+    let hash = null;
+    const getHash = () => hash || (hash = bcrypt.hashSync(clave, 10));
+    const buscar = db.prepare("SELECT * FROM usuarios WHERE usuario = ?");
+    const libre = (campo, valor) => valor && !db.prepare(`SELECT 1 FROM usuarios WHERE ${campo} = ?`).get(valor) ? valor : null;
+    const ins = db.prepare("INSERT INTO usuarios (usuario,password_hash,rol,nombre,telefono,email,dni,creado) VALUES (?,?,?,?,?,?,?,?)");
+    const upd = db.prepare(`UPDATE usuarios SET password_hash = ?, rol = ?, activo = 1,
+        inhabilitado_en = NULL, inhabilitado_motivo = NULL, inhabilitado_por = NULL WHERE id = ?`);
+    const pendientes = CUENTAS_DEMO.filter(([u, r]) => {
+        const x = buscar.get(u);
+        return !x || !x.activo || x.rol !== r || !bcrypt.compareSync(clave, x.password_hash);
+    });
+    if (!pendientes.length) return;
+    db.transaction(() => {
+        // El trigger impide reactivar personal; se quita solo mientras se reponen las cuentas de prueba.
+        db.exec("DROP TRIGGER IF EXISTS trg_personal_no_reactivar");
+        for (const [u, r, n, t, e, dni] of pendientes) {
+            const x = buscar.get(u);
+            if (x) upd.run(getHash(), r, x.id);
+            else ins.run(u, getHash(), r, n, t, libre("email", e), libre("dni", dni), Date.now());
+        }
+        db.exec(`CREATE TRIGGER IF NOT EXISTS trg_personal_no_reactivar
+            BEFORE UPDATE OF activo ON usuarios
+            WHEN OLD.activo = 0 AND NEW.activo = 1 AND OLD.rol <> 'cliente'
+            BEGIN
+                SELECT RAISE(ABORT, 'El personal inhabilitado no puede volver a trabajar: la inhabilitación es definitiva.');
+            END;`);
+    })();
+    console.log(`Cuentas de prueba restauradas: ${pendientes.map(c => c[0]).join(", ")}`);
+}
+restaurarCuentasDemo();
 
 function sembrarHistorial() {
     if (process.env.SEED_HISTORIAL === "0") return;

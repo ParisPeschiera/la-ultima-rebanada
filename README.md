@@ -63,6 +63,7 @@ Todas son opcionales. Para usarlas copia `.env.example` a `.env`, cambia los val
 | `JWT_SECRET` | Texto largo y aleatorio que firma las sesiones. |
 | `BASE_URL` | Dirección pública del sitio, para los enlaces de los correos. |
 | `CLAVE_DEMO` | Contraseña de las cuentas de ejemplo (1234 por defecto). |
+| `CUENTAS_DEMO` | Al arrancar, el servidor repone las cuentas de prueba (las crea si faltan y, si se inhabilitaron o cambiaron de contraseña, las reactiva con `CLAVE_DEMO`). Pon `0` para desactivarlo. |
 | `TRUST_PROXY` | Pon `1` cuando el sitio está detrás de un proxy, como en Railway. |
 | `SEED_HISTORIAL` | Pon `0` para no generar el historial de ejemplo de 90 días. |
 | `TZ_HORAS` | Zona horaria del negocio respecto a UTC (Lima es `-5`). |
